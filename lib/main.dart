@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_proj/home_page.dart';
+import 'package:test_proj/login_page.dart';
+
 
 main(List<String> args) {
   runApp(CoolApp());
