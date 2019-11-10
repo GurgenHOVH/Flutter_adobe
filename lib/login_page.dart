@@ -90,7 +90,9 @@ class _LoginPageState extends State<LoginPage> {
             color: nightMode ? Color(0xff02102F) : Colors.white,
             fontWeight: FontWeight.w200),
       ),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, 'home');
+      },
     );
   }
 
