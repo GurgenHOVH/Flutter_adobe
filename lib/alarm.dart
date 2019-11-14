@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:test_proj/add_alarm.popup.dart';
 import 'package:test_proj/model/alarm.dart';
 
 class AlarmTab extends StatefulWidget {
@@ -39,7 +40,9 @@ class _AlarmTabState extends State<AlarmTab> {
           CupertinoButton(
             padding: EdgeInsets.zero,
             child: Icon(Icons.add, color: Color(0xffE8AE52)),
-            onPressed: () {},
+            onPressed: () {
+              addClock();
+            },
           ),
         ],
         bottom: PreferredSize(
@@ -104,6 +107,14 @@ class _AlarmTabState extends State<AlarmTab> {
             color: alarms[index].status ? enabledTextColor : disabledTextColor,
             indent: 15,
           );
+        });
+  }
+
+  void addClock() {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (context) {
+          return AddAlarmPopup();
         });
   }
 }

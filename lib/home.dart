@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
             // sets the background color of the `BottomNavigationBar`
             canvasColor: Colors.black.withOpacity(0.8),
             // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-            primaryColor: Color(0xffE8AE52),
+            primaryColor: Color(0xffFF9500),
             textTheme: Theme.of(context).textTheme.copyWith(
                 caption: new TextStyle(
                     color: Color(
@@ -42,18 +42,21 @@ class _HomePageState extends State<HomePage> {
           unselectedLabelStyle: TextStyle(fontSize: 10),
           items: [
             BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.circle),
+              icon: ImageIcon(AssetImage('assets/images/world_clock.png')),
               title: Text('World Clock', overflow: TextOverflow.visible),
             ),
             BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.clock), title: Text('Alarm')),
+                icon: ImageIcon(AssetImage('assets/images/alarm.png')),
+                title: Text('Alarm')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.accessibility), title: Text('Bedtime')),
+                icon: ImageIcon(AssetImage('assets/images/bedtime.png')),
+                title: Text('Bedtime')),
             BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.clock_solid),
+                icon: ImageIcon(AssetImage('assets/images/stopwatch.png')),
                 title: Text('StopWatch')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.av_timer), title: Text('Timer')),
+                icon: ImageIcon(AssetImage('assets/images/timer.png')),
+                title: Text('Timer')),
           ],
         ),
       ),
