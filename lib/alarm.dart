@@ -12,14 +12,14 @@ class AlarmTab extends StatefulWidget {
 
 class _AlarmTabState extends State<AlarmTab> {
   List<Alarm> alarms = [
-    Alarm(TimeOfDay(hour: 17, minute: 17), true,
-        saturday: true, monday: true, thursday: true),
-    Alarm(TimeOfDay(hour: 7, minute: 15), false, monday: true),
-    Alarm(TimeOfDay(hour: 5, minute: 30), false, saturday: true, sunday: true),
-    Alarm.everyday(
-      TimeOfDay(hour: 10, minute: 30),
-      true,
-    ),
+    // Alarm(TimeOfDay(hour: 17, minute: 17), true,
+    //     saturday: true, monday: true, thursday: true),
+    // Alarm(TimeOfDay(hour: 7, minute: 15), false, monday: true),
+    // Alarm(TimeOfDay(hour: 5, minute: 30), false, saturday: true, sunday: true),
+    // Alarm.everyday(
+    //   TimeOfDay(hour: 10, minute: 30),
+    //   true,
+    // ),
   ];
 
   @override
@@ -110,11 +110,18 @@ class _AlarmTabState extends State<AlarmTab> {
         });
   }
 
+  saveAlarm(Alarm alarm) {
+    Navigator.of(context).pop();
+    setState(() {
+      alarms.add(alarm);
+    });
+  }
+
   void addClock() {
     showCupertinoModalPopup(
         context: context,
         builder: (context) {
-          return AddAlarmPopup();
+          return AddAlarmPopup(onSave: saveAlarm);
         });
   }
 }

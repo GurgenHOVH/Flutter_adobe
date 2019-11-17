@@ -10,21 +10,31 @@ const List<String> weekdays = [
   'Sunday'
 ];
 
+const List<String> abbrWeekdays = [
+  'Mn',
+  'Td',
+  'Wd',
+  'Th',
+  'Fr',
+  'St',
+  'Sn'
+];
+
 class Alarm {
-  final TimeOfDay time;
+  TimeOfDay time;
   bool status;
-  final bool everyDay;
+  bool everyDay;
 
   // Weekdats
-  final bool monday;
-  final bool tuesday;
-  final bool wednesday;
-  final bool thursday;
-  final bool friday;
-  final bool saturday;
-  final bool sunday;
+  bool monday;
+  bool tuesday;
+  bool wednesday;
+  bool thursday;
+  bool friday;
+  bool saturday;
+  bool sunday;
 
-  final List<bool> selectedWeekdays;
+  List<bool> selectedWeekdays;
 
   Alarm(
     this.time,
@@ -57,6 +67,18 @@ class Alarm {
         saturday = false,
         sunday = false,
         selectedWeekdays = [true, true, true, true, true, true, true];
+
+  void update() {
+    selectedWeekdays = [
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
+      sunday,
+    ];
+  }
 
   String getSelectedDays() {
     if (everyDay) {
@@ -95,7 +117,57 @@ class Alarm {
       }
     }
 
-    selected = selected.substring(0, selected.length - 2);
+    if (selected == "") {
+      selected = "Never";
+    } else {
+      selected = selected.substring(0, selected.length - 2);
+    }
+
+    return selected;
+  }
+
+  getABBRSelectedDays() {
+    if (everyDay) {
+      return "Everyday";
+    }
+
+    if (monday &&
+        tuesday &&
+        wednesday &&
+        thursday &&
+        friday &&
+        saturday &&
+        sunday) {
+      return "Everyday";
+    }
+
+    if (saturday && sunday) {
+      return "Weekends";
+    }
+
+    if (!saturday &&
+        !sunday &&
+        monday &&
+        tuesday &&
+        wednesday &&
+        thursday &&
+        friday) {
+      return "Weekdays";
+    }
+
+    String selected = "";
+
+    for (var i = 0; i < selectedWeekdays.length; i++) {
+      if (selectedWeekdays[i]) {
+        selected += abbrWeekdays[i] + ", ";
+      }
+    }
+
+    if (selected == "") {
+      selected = "Never";
+    } else {
+      selected = selected.substring(0, selected.length - 2);
+    }
 
     return selected;
   }
