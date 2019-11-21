@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:test_proj/add_alarm.popup.dart';
 import 'package:test_proj/model/alarm.dart';
 
@@ -22,6 +23,8 @@ class _AlarmTabState extends State<AlarmTab> {
     // ),
   ];
 
+  bool editMode = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,10 +34,12 @@ class _AlarmTabState extends State<AlarmTab> {
         leading: CupertinoButton(
           padding: EdgeInsets.zero,
           child: Text(
-            'Edit',
+            editMode ? 'Done' : 'Edit',
             style: TextStyle(color: Color(0xffE8AE52)),
           ),
-          onPressed: () {},
+          onPressed: () {
+            editAlarms();
+          },
         ),
         actions: <Widget>[
           CupertinoButton(
@@ -72,7 +77,32 @@ class _AlarmTabState extends State<AlarmTab> {
     return ListView.separated(
         itemCount: alarms.length,
         itemBuilder: (context, index) {
-          return ListTile(
+          return Slidable(
+            actionPane: SlidableScrollActionPane(),
+            closeOnScroll: true,
+            // enabled: !editMode,
+            secondaryActions: <Widget>[
+              SlideAction(
+                color: Color(0xffB93E39),
+                child: Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  deleteAlarm(index);
+                },
+              )
+            ],
+            child: ListTile(
+              leading: editMode
+                  ? Container(
+                      width: 25,
+                      alignment: Alignment.center,
+                      child: _MoreButton(),
+                    )
+                  : null,
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               title: Text(
                 alarms[index].time.format(context),
                 style: TextStyle(
@@ -89,25 +119,67 @@ class _AlarmTabState extends State<AlarmTab> {
                         ? enabledTextColor
                         : disabledTextColor),
               ),
-              trailing: Theme(
-                data: Theme.of(context)
-                    .copyWith(unselectedWidgetColor: Colors.red),
-                child: CupertinoSwitch(
-                  value: alarms[index].status,
-                  onChanged: (val) {
-                    setState(() {
-                      alarms[index].status = val;
-                    });
-                  },
-                ),
-              ));
+              trailing: editMode
+                  ? Icon(
+                      Icons.chevron_right,
+                      color: Colors.grey,
+                    )
+                  : CupertinoSwitch(
+                      value: alarms[index].status,
+                      onChanged: (val) {
+                        setState(() {
+                          alarms[index].status = val;
+                        });
+                      },
+                    ),
+            ),
+          );
         },
         separatorBuilder: (context, index) {
           return Divider(
             color: alarms[index].status ? enabledTextColor : disabledTextColor,
             indent: 15,
+            height: 1,
           );
         });
+  }
+
+  Widget deleteButton() {
+    return GestureDetector(
+      child: Container(
+        height: 25,
+        width: 25,
+        decoration: BoxDecoration(
+          color: Color(0xffB93E39),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Center(
+          child: Container(
+            height: 3,
+            width: 15,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+            ),
+          ),
+        ),
+      ),
+      onTap: () {
+        Slidable.of(context).open(actionType: SlideActionType.secondary);
+      },
+    );
+  }
+
+  editAlarms() {
+    setState(() {
+      editMode = !editMode;
+    });
+  }
+
+  deleteAlarm(int index) {
+    setState(() {
+      alarms.removeAt(index);
+    });
   }
 
   saveAlarm(Alarm alarm) {
@@ -123,5 +195,38 @@ class _AlarmTabState extends State<AlarmTab> {
         builder: (context) {
           return AddAlarmPopup(onSave: saveAlarm);
         });
+  }
+}
+
+class _MoreButton extends StatelessWidget {
+  const _MoreButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Container(
+        height: 25,
+        width: 25,
+        decoration: BoxDecoration(
+          color: Color(0xffB93E39),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Center(
+          child: Container(
+            height: 3,
+            width: 15,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+            ),
+          ),
+        ),
+      ),
+      onTap: () {
+        Slidable.of(context).open(actionType: SlideActionType.secondary);
+      },
+    );
   }
 }
